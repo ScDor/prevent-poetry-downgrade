@@ -1,7 +1,8 @@
 # Prevent Poetry Downgrade
 
 This [pre-commit](https://pre-commit.com) hook ensures that the *version of Poetry* used to manage a project's dependencies does not get inadvertently downgraded when editing the `poetry.lock` file.
-It prevents committing changes that would lower the Poetry version, encouraging best practices in dependency management.
+
+It prevents cases where a collaborator with an outdated version of Poetry causes unintended changes, and encourages best-practices.
 
 ## Usage
 
