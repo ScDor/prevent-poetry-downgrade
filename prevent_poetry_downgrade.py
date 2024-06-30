@@ -70,23 +70,22 @@ def run(
     if require_same_version:
         if previous_version != current_version:
             typer.echo(
-                "Poetry.lock version mismatch detected.\n"
-                f"You are using Poetry {current_version} to edit poetry.lock previously generated with Poetry {previous_version}.\n"
-                f"Run `poetry self update {previous_version}` to match your Poetry version."
+                f"The current poetry.lock was generated with Poetry v{current_version}, but it was previously generated with v{previous_version}.\n"
+                f"Run `poetry self update {previous_version}` to match your Poetry version, then `poetry lock [--no-update]`"
             )
             raise typer.Exit(1)
+        raise typer.Exit(0)
 
-    else:
-        if previous_version > current_version:
-            typer.echo(
-                "Poetry.lock downgrade detected.\n"
-                f"You are using Poetry {current_version} to edit poetry.lock previously generated with Poetry {previous_version}.\n"
-                "Run `poetry self update` to update your Poetry version."
-            )
-            raise typer.Exit(1)
+    if previous_version > current_version:
+        typer.echo(
+            f"The current poetry.lock was generated with Poetry v{current_version}, but it was previously generated with v{previous_version}.\n"
+            "Run `poetry self update` to update your Poetry version, then `poetry lock [--no-update]`."
+        )
+        raise typer.Exit(1)
 
 
 def main():
+    """Runs the CLI"""
     typer.run(run)
 
 
