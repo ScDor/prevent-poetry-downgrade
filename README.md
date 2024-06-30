@@ -12,7 +12,7 @@ Copy this to your [`.pre-commit-config`](https://pre-commit.com/#plugins) file
 
 ```yaml
 - repo: https://github.com/ScDor/prevent-poetry-downgrade
-  rev: v0.1.1
+  rev: v0.2.0
   hooks:
   - id: prevent-poetry-downgrade
 ```
