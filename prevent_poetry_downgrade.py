@@ -45,7 +45,7 @@ def _find_previous_version(lock_path: Path, head: str = "HEAD") -> Version:
     return parse_version(previous_lock_header)
 
 
-def main(
+def run(
     lock_path: Path = typer.Argument(
         default=Path.cwd() / POETRY_LOCK_FILE_NAME,
         help=f"Path to the lock file. Defaults to {POETRY_LOCK_FILE_NAME} in the current directory.",
@@ -86,5 +86,9 @@ def main(
             raise typer.Exit(1)
 
 
+def main():
+    typer.run(run)
+
+
 if __name__ == "__main__":
-    typer.run(main)
+    main()
