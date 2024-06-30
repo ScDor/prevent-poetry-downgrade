@@ -1,7 +1,7 @@
 - id: prevent-poetry-downgrade
   name: prevent poetry.lock downgrade
   description: Compares the Poetry version used for locking against HEAD.
-  entry: prevent_poetry_downgrade.py
+  entry: prevent-poetry-downgrade
   language: python
   files: poetry.lock
   pass_filenames: true
