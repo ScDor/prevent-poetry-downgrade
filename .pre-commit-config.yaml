@@ -19,8 +19,17 @@ repos:
       - id: check-json
       - id: check-ast
       - id: check-merge-conflict
+  - repo: https://github.com/ScDor/prevent-poetry-downgrade
+    rev: v0.1.1
+    hooks:
+      - id: prevent-poetry-downgrade
   - repo: local
     hooks:
+      - id: prevent-poetry-downgrade-dev
+        name: prevent-poetry-downgrade (DEV)
+        entry: prevent-poetry-downgrade
+        language: system
+        files: poetry.lock
       - id: pylint
         name: pylint
         entry: pylint
