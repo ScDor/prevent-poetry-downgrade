@@ -10,9 +10,9 @@ Copy this to your [`.pre-commit-config`](https://pre-commit.com/#plugins) file
 
 ```yaml
 - repo: https://github.com/ScDor/prevent-poetry-downgrade
+  rev: v0.1.1
   hooks:
   - id: prevent-poetry-downgrade
-    rev: v0.1.0
 ```
 
 To pass other arguments, add the `args` key, e.g.
