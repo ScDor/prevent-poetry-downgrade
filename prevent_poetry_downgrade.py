@@ -1,9 +1,15 @@
 """Prevent downgrading Poetry when editing a lock file."""
 
+from operator import imod
 from pathlib import Path
 import re
-from packaging.version import Version
+from cleo.io.io import IO
+from poetry.plugins.plugin import Plugin
+from poetry.__version__ import __version__ as poetry_version
+from poetry.core.constraints.version import Version
+
 import git
+from poetry.poetry import Poetry
 import typer
 
 VERSION_RE = re.compile(r"Poetry (\d+\.\d+\.\d+)")
@@ -84,6 +90,31 @@ def main(
                 "Run `poetry self update` to update your Poetry version."
             )
             raise typer.Exit(1)
+
+class PreventDowngradePlugin(Plugin):
+    def activate(self, poetry: Poetry, io: IO) -> None:
+        io.write_line("Checking for version downgrades...")
+        current_version = Version(poetry_version)
+        previous_version = _find_previous_version(poetry.locker.lock, self.option('prev_ref', 'HEAD'))
+
+        if self.option('require_same_version', False):
+            if previous_version != current_version:
+                self.error(
+                    "Poetry.lock version mismatch detected.\n"
+                    f"You are using Poetry {current_version} to edit poetry.lock previously generated with Poetry {previous_version}.\n"
+                    f"Run `poetry self update {previous_version}` to match your Poetry version."
+                )
+                raise typer.Exit(1)
+
+        else:
+            if previous_version > current_version:
+                typer.echo(
+                    "Poetry.lock downgrade detected.\n"
+                    f"You are using Poetry {current_version} to edit poetry.lock previously generated with Poetry {previous_version}.\n"
+                    "Run `poetry self update` to update your Poetry version."
+                )
+                raise typer.Exit(1)
+
 
 
 if __name__ == "__main__":
